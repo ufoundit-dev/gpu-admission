@@ -25,13 +25,9 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/spf13/pflag"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/rest"
-	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/component-base/logs"
 	"k8s.io/klog"
 
-	"tkestack.io/gpu-admission/pkg/predicate"
 	"tkestack.io/gpu-admission/pkg/route"
 	"tkestack.io/gpu-admission/pkg/version/verflag"
 )
@@ -56,25 +52,31 @@ func main() {
 	route.AddVersion(router)
 
 	var (
-		clientCfg *rest.Config
-		err       error
+	// clientCfg *rest.Config
+	// err       error
 	)
 
-	clientCfg, err = clientcmd.BuildConfigFromFlags(masterURL, kubeconfig)
-	if err != nil {
-		klog.Fatalf("Error building kubeconfig: %s", err.Error())
-	}
+	// clientCfg, err = clientcmd.BuildConfigFromFlags(masterURL, kubeconfig)
+	// if err != nil {
+	// 	klog.Fatalf("Error building kubeconfig: %s", err.Error())
+	// }
 
-	kubeClient, err := kubernetes.NewForConfig(clientCfg)
-	if err != nil {
-		klog.Fatalf("Error building kubernetes clientset: %s", err.Error())
-	}
+	// kubeClient, err := kubernetes.NewForConfig(clientCfg)
+	// if err != nil {
+	// 	klog.Fatalf("Error building kubernetes clientset: %s", err.Error())
+	// }
 
-	gpuFilter, err := predicate.NewGPUFilter(kubeClient)
-	if err != nil {
-		klog.Fatalf("Failed to new gpu quota filter: %s", err.Error())
-	}
-	route.AddPredicate(router, gpuFilter)
+	// gpuFilter, err := predicate.NewGPUFilter(kubeClient)
+	// if err != nil {
+	// 	klog.Fatalf("Failed to new gpu quota filter: %s", err.Error())
+	// }
+	// route.AddPredicate(router, gpuFilter)
+
+	route.AddBindV2(router)
+	route.AddPredicateV2(router)
+	route.AddPrioritizeV2(router)
+	route.AddStatusV2(router)
+	route.AddVersionV2(router)
 
 	go func() {
 		log.Println(http.ListenAndServe(profileAddress, nil))

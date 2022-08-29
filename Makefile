@@ -28,3 +28,6 @@ format:
 	hack/format.sh
 
 #  vim: set ts=2 sw=2 tw=0 noet :
+
+ufoundit:
+	IMAGE=hub.ufoundit.com.cn/mirror/gpu-admission:v0.0.2 hack/build-img.sh
