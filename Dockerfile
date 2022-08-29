@@ -35,6 +35,8 @@ COPY --from=build /root/rpmbuild/RPMS/x86_64/gpu-admission-${version}-${commit}.
 
 RUN rpm -ivh /tmp/gpu-admission-${version}-${commit}.el7.x86_64.rpm
 
+COPY /bin/gpu-admission /gpu-admission
 EXPOSE 3456
 
 CMD ["/bin/bash", "-c", "/usr/bin/gpu-admission --address=0.0.0.0:3456 --v=$LOG_LEVEL --logtostderr=true $EXTRA_FLAGS"]
+

@@ -49,7 +49,7 @@ func main() {
 	verflag.PrintAndExitIfRequested()
 
 	router := httprouter.New()
-	route.AddVersion(router)
+	// route.AddVersion(router)
 
 	var (
 	// clientCfg *rest.Config
